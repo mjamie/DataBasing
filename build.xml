@@ -1,0 +1,18 @@
+<project name="Retrieve JDBC" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant" default="getdependencies">
+
+    <target name="getdependencies" description="retrieve the dependencies and more" depends="clean" >
+
+        <ivy:settings url="http://artifactory.cpt.intecbilling.com/ivy/ivysettings.xml"/>
+        <!--<ivy:settings file="ivysettings_public_repo.xml"/>-->
+
+        <ivy:resolve file="${basedir}/ivy.xml"/>
+        <!--ivy:resolve file="${basedir}/ivy_dependencies_bigger.xml" / -->
+
+        <ivy:retrieve type="jar,bundle" pattern="${basedir}/JBDC/[artifact].[ext]" ivypattern="${basedir}/JBDC/[artifact].[ext]" />
+    </target>
+
+    <target name="clean" description="delete the lib folder">
+        <delete dir="${basedir}/JBDC" />
+    </target>
+
+</project>

@@ -29,22 +29,24 @@ public class Main  {
     }
 
     public void add(String name, String weapon) {
+        String sql = "INSERT INTO HEROES(NAME,WEAPON,ID) VALUES(?,?,?) ";
+        int i = 1;
+        String nameStructure = capitalize(name);
+        String weaponStructure = capitalize(weapon);
 
-        String nameStructure = name.substring(0,1).toUpperCase()+name.substring(1).toLowerCase();
-        String weaponStructure = weapon.substring(0,1).toUpperCase()+weapon.substring(1).toLowerCase();
         try {
-            int i = rs.getInt("id");
-            i++;
-            rs.last();
 
-            rs.moveToInsertRow();
-            rs.updateInt("ID",i);
-            rs.updateString("Name", nameStructure);
-            rs.updateString("Weapon", weaponStructure);
+            pst = con.prepareStatement(sql);
+            while(rs.next()) {
+                i++;
+            }
 
-            rs.insertRow();
+            pst.setString(1,nameStructure);
+            pst.setString(2,weaponStructure);
+            pst.setInt(3,i);
 
-            st.close();
+            pst.executeUpdate();
+
             rs.close();
 
         } catch (SQLException e) {
@@ -54,7 +56,7 @@ public class Main  {
 
     public void updateRow(String newName,String newWeapon,String originalName) {
         String sql = "UPDATE HEROES SET NAME=?, WEAPON=? WHERE NAME=?";
-        String newNameStructure =  newName.substring(0,1).toUpperCase()+newName.substring(1).toLowerCase();
+        String newNameStructure =  capitalize(newName);
         try {
             pst = con.prepareStatement(sql);
 
@@ -62,7 +64,7 @@ public class Main  {
 
             while(rs.next()) {
                 if(rs.getString("name").equalsIgnoreCase(originalName)) {
-                    dataName = originalName.substring(0,1).toUpperCase()+originalName.substring(1).toLowerCase();
+                    dataName = capitalize(originalName);
                 }
             }
 
@@ -72,6 +74,8 @@ public class Main  {
 
             pst.executeUpdate();
 
+            rs.close();
+
         } catch (SQLException e) {
             System.out.println(e+" Error Updating");
         }
@@ -80,7 +84,7 @@ public class Main  {
     public void deleteRow(String name) {
         String sql = "DELETE HEROES WHERE NAME= ?";
 
-        String nameStructure = name.substring(0,1).toUpperCase()+name.substring(1).toLowerCase();
+        String nameStructure = capitalize(name);
         try {
 
             pst = con.prepareStatement(sql);
@@ -91,6 +95,11 @@ public class Main  {
         } catch (SQLException e) {
             System.out.println(e+" Error Updating");
         }
+    }
+
+    public String capitalize(String word){
+        String newWord = word.substring(0,1).toUpperCase()+word.substring(1).toLowerCase();
+        return newWord;
     }
 
 }

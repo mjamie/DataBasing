@@ -11,7 +11,7 @@ public class MainTest {
     @Test
     public void add() throws Exception {
          main.start();
-         main.add("Foxis","Guns");
+         main.add("Hanate","staff");
     }
 
     @Test
@@ -27,5 +27,12 @@ public class MainTest {
         main.start();
         main.deleteRow("steve");
     }
+
+    @Test
+    public void giveCapitalLetterToFirstLetter(){
+        String word = main.capitalize("will");
+        System.out.println(word);
+    }
+
 
 }
